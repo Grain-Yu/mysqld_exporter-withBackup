@@ -235,7 +235,7 @@ promu: $(PROMU)
 
 $(PROMU):
 	$(eval PROMU_TMP := $(shell mktemp -d))
-	curl -s -L $(PROMU_URL) | tar -xvzf - -C $(PROMU_TMP)
+	tar -xvzf ./promu-0.15.0.linux-amd64.tar.gz -C $(PROMU_TMP)
 	mkdir -p $(FIRST_GOPATH)/bin
 	cp $(PROMU_TMP)/promu-$(PROMU_VERSION).$(GO_BUILD_PLATFORM)/promu $(FIRST_GOPATH)/bin/promu
 	rm -r $(PROMU_TMP)
