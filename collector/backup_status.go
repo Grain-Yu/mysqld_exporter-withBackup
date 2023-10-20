@@ -59,12 +59,25 @@ func (ScrapeBackupStatus) Version() float64 {
 
 // Scrape collects data from database connection and sends it over channel as prometheus metric.
 func (ScrapeBackupStatus) Scrape(ctx context.Context, db *sql.DB, ch chan<- prometheus.Metric, logger log.Logger) error {
-    filename := "/tmp/backupstatus.txt"
+    var status float64
+	var delblank string
+	filename := "/tmp/mysqlBakStatus.txt"
     content, err := os.ReadFile(filename)
     if err != nil {
-        return err
+		status = 10000
+		ch <- prometheus.MustNewConstMetric(
+			backupStatusDesc, prometheus.GaugeValue, status,
+		)
+
+        return nil
     }
-    status, _ := strconv.ParseFloat(strings.Replace(string(content),"\n", "", -1), 64)
+	delblank = strings.Replace(string(content), " ", "", -1)
+    delnewline, _ := strconv.ParseFloat(strings.Replace(delblank,"\n", "", -1), 64)
+	if delnewline == 1 {
+        status = 1
+    } else {
+		status = 0
+	}
 	ch <- prometheus.MustNewConstMetric(
 		backupStatusDesc, prometheus.GaugeValue, status,
 	)
