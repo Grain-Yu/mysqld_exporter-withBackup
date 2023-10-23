@@ -1,3 +1,10 @@
+# 添加了对于备份状态的监控
+首先，在备份脚本中添加判断备份是否成功的逻辑：成功向/tmp/mysqlBakStatus.txt中echo 1，失败向/tmp/mysqlBakStatus.txt中echo 0，
+
+运行mysqld_exporter时需指定 --collect.backup_status标志: mysqld_exporter xxxx --collect.backup_status
+
+对应的metric指标为mysql_backup_status. 返回值及含义：0-Failed 1-Normal 10000-读取/tmp/mysqlBakStatus.txt文件失败
+
 # MySQL Server Exporter [![Build Status](https://travis-ci.org/prometheus/mysqld_exporter.svg)][travis]
 
 [![CircleCI](https://circleci.com/gh/prometheus/mysqld_exporter/tree/main.svg?style=shield)][circleci]
