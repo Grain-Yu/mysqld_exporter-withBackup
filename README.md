@@ -1,5 +1,5 @@
 # 添加了对于备份状态的监控
-首先，在备份脚本中添加判断备份是否成功的逻辑：成功向/tmp/mysqlBakStatus.txt中echo 1，失败向/tmp/mysqlBakStatus.txt中echo 0，
+首先，在备份脚本中添加判断备份是否成功的逻辑：成功则echo "1" > /tmp/mysqlBakStatus.txt，失败则echo "0" > /tmp/mysqlBakStatus.txt，
 
 运行mysqld_exporter时需指定 --collect.backup_status标志: mysqld_exporter xxxx --collect.backup_status
 
